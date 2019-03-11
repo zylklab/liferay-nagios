@@ -1,0 +1,21 @@
+version: '3.1'
+
+networks:
+  monitoring:
+
+services:
+  icinga.zylk.net:
+    build: .
+    networks:
+      monitoring:
+    ports:
+      - 8888:80
+    environment:
+      - LF_HOST=tomcat-revenge.zylk.net
+      - JMX_USER=${JMX_USER}
+      - JMX_PASS=${JMX_PASS}
+      - JXM_PORT=6666
+      - ELK_HOST=tomcat-revenge.zylk.net
+      - ELK_PORT=9200
+    extra_hosts:
+      - "tomcat-revenge.zylk.net:192.168.1.201"

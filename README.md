@@ -2,7 +2,7 @@
 
 ## Table of Contents
 - [Introduction](#introduction)
-- [Using Dockerfile](#using-dockerfile)
+- [Using Docker](#using-docker)
 - [Tested on](#tested-on)
 - [Author](#author)
 - [Links](#links)
@@ -21,7 +21,7 @@ The files involved in Nagios/Icinga configuration for Alfresco Community are the
 
 For using this setup you need some dependencies like curl, jq, jshon in your Nagios Server.
 
-## Using Dockerfile
+## Using Docker
 
 You can check this basic Nagios/Icinga setup using Docker in Ubuntu 14.04 LTS. It includes a template for using it in Liferay via check_jmx. You need to enable JMX in Liferay Portal.
 
@@ -31,26 +31,30 @@ $ git clone https://github.com/zylklab/liferay-nagios
 $ cd liferay-nagios
 ```
 
-1. Configure environment variables in Dockerfile according to your services to monitor.
+1. Configure environment variables in docker-compose.yml file according to your services to monitor. Yo can even use a `.env` file for your sensitive passwords
+
 
 ```
-##
-## Icinga Config
-##
-ENV ICINGA_CONFIG /etc/icinga/objects
-ENV ICINGA_PLUGIN /usr/lib/nagios/plugins
-ENV ICINGA_ADMIN admin
+...
+    environment:
+      - LF_HOST=tomcat.zylk.net
+      - JMX_USER=${JMX_USER}
+      - JMX_PASS=${JMX_PASS}
+      - JXM_PORT=6666
+      - ELK_HOST=tomcat.zylk.net
+      - ELK_PORT=9200
+    extra_hosts:
+      - "tomcat.zylk.net:192.168.1.100"
+```
+
+2. Run docker compose to start the application
+
+```
+$ docker-compose up
 
 ```
 
-2. Run docker commands
-
-```
-$ sudo docker build -t zylklab/icingadxp .
-$ sudo docker run -i -t zylklab/icingadxp
-```
-
-3. Login http://docker-server-ip/icinga (by default http://172.17.0.2/icinga) with icingaadmin/admin credentials.
+3. Login on `http://<containet-ip>:<container-port>/icinga` (by default http://localhost:8888/icinga) with `icingaadmin/admin` credentials.
 
 Note: Take into consideration that email alerts are not configured. You should configure postfix and Icinga/Nagios contacts.
 
@@ -59,8 +63,9 @@ Note: Take into consideration that email alerts are not configured. You should c
 - Liferay DXP
 - Nagios/Icinga 3
 - PNP4Nagios 0.6.0
-- Docker version 1.12.6
 - Ubuntu 14.04 LTS
+- Docker version 1.18.09.1, build 4c52b90
+- Docker compose version 1.21.0
 
 ## Contributors
 
