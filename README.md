@@ -75,3 +75,4 @@ Note: Take into consideration that email alerts are not configured. You should c
 ## Links
 
 - [Alfresco Nagios Docker Template](https://raw.githubusercontent.com/zylklab/alfresco-nagios)
+- [Enable JMX in Liferay](https://github.com/zylklab/liferay-nagios-jmx-plugin)
